@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ÃƒÂ¯Ã‚Â»Ã‚Â¿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -44,17 +44,17 @@
     header {
       background: linear-gradient(120deg, var(--navy), var(--mid-navy));
       color: #fff;
-      padding: 1rem 2rem;
+      padding: 0.5rem 1rem;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 0.5rem;
       box-shadow: 0 6px 20px rgba(26,58,82,0.35);
     }
     header h1 {
       margin: 0;
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       letter-spacing: 0.04em;
     }
     .status-group {
@@ -65,8 +65,8 @@
     }
     .badge {
       border-radius: 999px;
-      padding: 0.35rem 0.85rem;
-      font-size: 0.85rem;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
       border: 1px solid rgba(255,255,255,0.4);
       background: rgba(255,255,255,0.15);
     }
@@ -90,11 +90,12 @@
     input,
     textarea {
       font: inherit;
-      border-radius: 6px;
+      border-radius: 4px;
       border: 1px solid var(--border);
-      padding: 0.45rem 0.75rem;
+      padding: 0.35rem 0.6rem;
       background: #fff;
       color: var(--text-dark);
+      font-size: 0.9rem;
     }
     button {
       background: var(--primary);
@@ -121,24 +122,24 @@
     main {
       flex: 1;
       display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 1.25rem;
-      padding: 1.5rem;
+      grid-template-columns: 200px 1fr;
+      gap: 0.75rem;
+      padding: 0.75rem;
     }
     nav {
       background: var(--mid-navy);
-      border-radius: 12px;
-      padding: 1rem;
+      border-radius: 8px;
+      padding: 0.6rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.4rem;
       color: #fff;
       box-shadow: 0 10px 25px rgba(44,62,80,0.35);
     }
     nav h2 {
       margin: 0;
       letter-spacing: 0.08em;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       color: #b8daff;
     }
@@ -156,100 +157,111 @@
       background: transparent;
       display: none;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.6rem;
     }
     section.active { display: flex; }
     .panel {
       background: var(--card-bg);
       border: 1px solid var(--border-light);
-      border-radius: 12px;
-      padding: 1rem;
+      border-radius: 8px;
+      padding: 0.6rem;
       box-shadow: 0 20px 40px rgba(15,23,42,0.08);
       display: flex;
       flex-direction: column;
-      gap: 0.7rem;
+      gap: 0.5rem;
     }
     .panel h3 {
       margin: 0;
       color: var(--mid-navy);
-      font-size: 1.1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
     }
-    .grid { display: grid; gap: 1rem; }
-    .grid.two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .grid.three { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .grid { display: grid; gap: 0.5rem; }
+    .grid.two { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .grid.three { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
     textarea,
     pre {
       background: #f8f9fa;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid var(--border);
-      padding: 0.75rem;
-      min-height: 120px;
+      padding: 0.5rem;
+      min-height: 80px;
       font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.85rem;
       resize: vertical;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 6px;
       overflow: hidden;
       background: #fff;
     }
     table thead { background: var(--table-header); color: #fff; }
     table th,
     table td {
-      padding: 0.65rem 0.8rem;
+      padding: 0.4rem 0.6rem;
       border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     table tr:last-child td { border-bottom: none; }
-    .toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .toolbar button { flex: 1 1 160px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .toolbar button { flex: 1 1 140px; }
     .chip-set { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .chip {
       background: var(--info-bg);
       border: 1px solid var(--info-border);
-      padding: 0.3rem 0.55rem;
+      padding: 0.2rem 0.4rem;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--info-text);
     }
     .chip button {
-      margin-left: 0.4rem;
+      margin-left: 0.3rem;
       border: none;
       background: transparent;
       color: inherit;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       padding: 0;
     }
-    .command-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .command-list { display: flex; flex-direction: column; gap: 0.5rem; }
     .command-block {
       border: 1px dashed var(--border);
-      border-radius: 10px;
-      padding: 0.75rem;
+      border-radius: 6px;
+      padding: 0.5rem;
       background: #f8f9fa;
       position: relative;
     }
+    .command-block h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 0.85rem;
+    }
+    .command-block p {
+      margin: 0;
+      font-size: 0.8rem;
+    }
     .command-block button {
       position: absolute;
-      right: 0.75rem;
-      top: 0.6rem;
+      right: 0.5rem;
+      top: 0.4rem;
       background: transparent;
       color: var(--danger);
       border: none;
+      font-size: 0.85rem;
     }
     .log-panel {
-      max-height: 200px;
+      max-height: 150px;
       overflow-y: auto;
       background: #0f172a;
       color: #e5e5e5;
-      border-radius: 10px;
-      padding: 0.75rem;
+      border-radius: 6px;
+      padding: 0.5rem;
       font-family: 'Cascadia Code', monospace;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       border: 1px solid #1f2840;
     }
-    .log-entry { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.25rem 0; }
+    .log-entry { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.15rem 0; }
     .log-entry:last-child { border-bottom: none; }
     .floating-toast {
       position: fixed;
@@ -419,7 +431,7 @@
               </select>
             </label>
             <label>Target
-              <input type="text" id="cpTarget" placeholder="e.g. fan_supply" />
+              <select id="cpTarget"></select>
             </label>
             <label>Value / Duration
               <input type="text" id="cpValue" placeholder="Value or ms" />
@@ -479,13 +491,35 @@
         getOutput: document.getElementById('getOutput')
       };
 
-      const parameters = [
-        'temp_ext','temp_int','temp_mix','temp_coil','temp_hx','temp6',
-        'fan_supply_out','fan_extract_out','fan_supply_tach','fan_extract_tach',
-        'damper_supply','damper_extract','damper_current_supply','damper_current_extract',
-        'cool_setpoint','heat_setpoint','fan_setpoint','airflow_demand','pressure_demand',
-        'system_status','fault_code'
-      ];
+const parameters = [
+  { id: 'temp_ext', label: 'Temp Ext' },
+  { id: 'temp_int', label: 'Temp Int' },
+  { id: 'temp_mix', label: 'Temp Mix' },
+  { id: 'temp_coil', label: 'Temp Coil' },
+  { id: 'temp_hx', label: 'Temp HX' },
+  { id: 'temp6', label: 'Temp 6' },
+  { id: 'fan_supply_out', label: 'Fan Supply Out' },
+  { id: 'fan_extract_out', label: 'Fan Extract Out' },
+  { id: 'fan_supply_tach', label: 'Fan Supply Tach' },
+  { id: 'fan_extract_tach', label: 'Fan Extract Tach' },
+  { id: 'damper_supply', label: 'Damper Supply' },
+  { id: 'damper_extract', label: 'Damper Extract' },
+  { id: 'damper_current_supply', label: 'Damper Current Supply' },
+  { id: 'damper_current_extract', label: 'Damper Current Extract' },
+  { id: 'cool_setpoint', label: 'Cool Setpoint' },
+  { id: 'heat_setpoint', label: 'Heat Setpoint' },
+  { id: 'fan_setpoint', label: 'Fan Setpoint' },
+  { id: 'airflow_demand', label: 'Airflow Demand' },
+  { id: 'pressure_demand', label: 'Pressure Demand' },
+  { id: 'system_status', label: 'System Status' },
+  { id: 'fault_code', label: 'Fault Code' },
+  { id: 'control_mode', label: 'Control Mode' }
+];
+
+const parameterMap = new Map(parameters.map(item => [item.id, item.label]));
+const labelMap = new Map(parameters.map(item => [item.label, item.id]));
+const parameterLabel = id => parameterMap.has(id) ? parameterMap.get(id) : id;
+const parameterIdFromLabel = label => labelMap.get(label);
 
       const monitorDefaults = ['temp_ext','temp_int','fan_supply_out','fan_extract_out','damper_supply','cool_setpoint'];
       const infoCommands = new Set(['uid1','uid2','uid3','flash','uart','version']);
@@ -506,19 +540,25 @@
         setQueue: [],
         monitorSelection: new Set(monitorDefaults),
         autoRefreshTimer: null,
+        keepAliveTimer: null,
         lastResponse: '',
         lastCommand: '',
         program: []
       };
+
+      const formatParam = id => `"${parameterLabel(id)}"`;
 
       const parsePairs = text => {
         const result = {};
         text.split(/[\n,]/).forEach(pair => {
           const [rawKey, rawVal] = pair.split('=');
           if (!rawKey) return;
-          const key = rawKey.trim();
+          const key = rawKey.trim().replace(/^"|"$/g, '');
           const value = rawVal !== undefined ? rawVal.trim() : '';
-          if (key) result[key] = value;
+          if (!key) return;
+          result[key] = value;
+          const id = parameterIdFromLabel(key);
+          if (id) result[id] = value;
         });
         return result;
       };
@@ -567,6 +607,7 @@
             appState.connected = true;
             utils.log('Serial port connected.');
             render.status();
+            serialManager.startKeepAlive();
           } catch (err) {
             utils.log(`Connection failed: ${err.message}`, 'error');
             utils.toast('Unable to connect to serial port.');
@@ -574,6 +615,7 @@
         },
         async disconnect() {
           appState.keepReading = false;
+          serialManager.stopKeepAlive();
           if (appState.reader) {
             try { await appState.reader.cancel(); } catch (_) {}
             appState.reader.releaseLock();
@@ -636,6 +678,21 @@
             utils.log(`Send error: ${err.message}`, 'error');
             utils.toast('Failed to send command.');
           }
+        },
+        startKeepAlive() {
+          if (appState.keepAliveTimer) return;
+          if (appState.mockMode) return;
+          appState.keepAliveTimer = setInterval(() => {
+            serialManager.send('set "Control Mode"=1');
+          }, 3600000);
+          utils.log('Keep-alive started (60 min interval).');
+        },
+        stopKeepAlive() {
+          if (appState.keepAliveTimer) {
+            clearInterval(appState.keepAliveTimer);
+            appState.keepAliveTimer = null;
+            utils.log('Keep-alive stopped.');
+          }
         }
       };
 
@@ -695,7 +752,7 @@
               payload = '{"fan_setpoint":75,"cool_setpoint":24.0}';
               break;
             case 'data':
-              payload = parameters.map(p => `${p}=${(Math.random()*100).toFixed(1)}`).join(', ');
+              payload = parameters.map(p => `${p.label}=${(Math.random()*100).toFixed(1)}`).join(', ');
               break;
             default:
               if (cmd === 'readfile') payload = 'File chunk lorem ipsum...';
@@ -725,24 +782,25 @@
         customResponse(text) { dom.customResponse.textContent = text || 'No response.'; },
         monitorSelection() {
           dom.monitorSelection.innerHTML = parameters.map(param => {
-            const active = appState.monitorSelection.has(param);
-            return `<label class="chip"><input type="checkbox" data-monitor="${param}" ${active ? 'checked' : ''}/> ${param}</label>`;
+            const active = appState.monitorSelection.has(param.id);
+            return `<label class="chip"><input type="checkbox" data-monitor="${param.id}" ${active ? 'checked' : ''}/> ${param.label}</label>`;
           }).join('');
         },
         monitorData(data) {
           const now = utils.timestamp();
           dom.monitorTable.innerHTML = Array.from(appState.monitorSelection).map(key => {
-            const value = data[key] ?? '--';
-            return `<tr><td>${key}</td><td>${value}</td><td>${now}</td></tr>`;
+            const label = parameterLabel(key);
+            const value = data[label] ?? data[key] ?? '--';
+            return `<tr><td>${label}</td><td>${value}</td><td>${now}</td></tr>`;
           }).join('');
         },
         getQueue() {
-          dom.getQueue.innerHTML = Array.from(appState.getParams).map(param => `<span class="chip">${param}<button data-remove-get="${param}">x</button></span>`).join('');
+          dom.getQueue.innerHTML = Array.from(appState.getParams).map(param => `<span class="chip">${parameterLabel(param)}<button data-remove-get="${param}">x</button></span>`).join('');
         },
         setQueue() {
           dom.setQueue.innerHTML = appState.setQueue.map((item, idx) => `
             <div class="command-block">
-              <h4>${item.param}</h4>
+              <h4>${parameterLabel(item.param)}</h4>
               <p>Value: ${item.value}</p>
               <button data-remove-set="${idx}">Remove</button>
             </div>
@@ -750,13 +808,16 @@
         },
         programList() {
           const list = document.getElementById('programList');
-          list.innerHTML = appState.program.map((step, idx) => `
+          list.innerHTML = appState.program.map((step, idx) => {
+            const targetLabel = step.type === 'delay' ? 'Delay' : parameterLabel(step.target);
+            return `
             <div class="command-block">
               <h4>${step.type.toUpperCase()}</h4>
-              <p>Target: ${step.target || '--'} | Value: ${step.value || '--'}</p>
+              <p>Target: ${targetLabel || '--'} | Value: ${step.value || '--'}</p>
               <button data-remove-program="${idx}">Remove</button>
             </div>
-          `).join('');
+          `;
+          }).join('');
         }
       };
       const actions = {
@@ -771,8 +832,8 @@
         },
         executeGet() {
           if (!appState.getParams.size) return utils.toast('Add at least one parameter.');
-          const command = `get ${Array.from(appState.getParams).join(',')}`;
-          serialManager.send(command);
+          const command = Array.from(appState.getParams).map(formatParam).join(',');
+          serialManager.send(`get ${command}`);
         },
         addSetParam() {
           const param = dom.setParam.value;
@@ -787,7 +848,9 @@
         },
         executeSet() {
           if (!appState.setQueue.length) return utils.toast('Set queue empty.');
-          const payload = appState.setQueue.map(item => `${item.param}=${item.value}`).join(',');
+          const payload = appState.setQueue
+            .map(item => `${formatParam(item.param)}=${item.value}`)
+            .join(',');
           serialManager.send(`set ${payload}`);
         },
         clearSetQueue() {
@@ -833,7 +896,7 @@
         },
         addProgramStep() {
           const type = document.getElementById('cpCommandType').value;
-          const target = document.getElementById('cpTarget').value.trim();
+          const target = document.getElementById('cpTarget').value;
           const value = document.getElementById('cpValue').value.trim();
           if (type !== 'delay' && (!target || !value)) return utils.toast('Provide target and value.');
           if (type === 'delay' && !value) return utils.toast('Provide delay duration.');
@@ -875,7 +938,10 @@
               await new Promise(resolve => setTimeout(resolve, Number(step.value) || 0));
               continue;
             }
-            const command = `${step.type} ${step.target} ${step.value}`.trim();
+            const target = formatParam(step.target);
+            const command = step.type === 'set'
+              ? `set ${target}=${step.value}`
+              : `get ${target}`;
             serialManager.send(command);
             await new Promise(resolve => setTimeout(resolve, 220));
           }
@@ -972,12 +1038,14 @@
       }
 
       function init() {
+        const cpTarget = document.getElementById('cpTarget');
         parameters.forEach(param => {
           const option = document.createElement('option');
-          option.value = param;
-          option.textContent = param;
+          option.value = param.id;
+          option.textContent = param.label;
           dom.parameterSelect.appendChild(option);
           dom.setParam.appendChild(option.cloneNode(true));
+          cpTarget.appendChild(option.cloneNode(true));
         });
         render.monitorSelection();
         render.setQueue();
@@ -992,3 +1060,4 @@
   </script>
 </body>
 </html>
+
