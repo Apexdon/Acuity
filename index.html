@@ -683,7 +683,7 @@ const parameterIdFromLabel = label => labelMap.get(label);
           if (appState.keepAliveTimer) return;
           if (appState.mockMode) return;
           appState.keepAliveTimer = setInterval(() => {
-            serialManager.send('set "Control Mode"=1');
+            serialManager.send('set "Control Mode":1');
           }, 3600000);
           utils.log('Keep-alive started (60 min interval).');
         },
@@ -849,7 +849,7 @@ const parameterIdFromLabel = label => labelMap.get(label);
         executeSet() {
           if (!appState.setQueue.length) return utils.toast('Set queue empty.');
           const payload = appState.setQueue
-            .map(item => `${formatParam(item.param)}=${item.value}`)
+            .map(item => `${formatParam(item.param)}:${item.value}`)
             .join(',');
           serialManager.send(`set ${payload}`);
         },
@@ -940,7 +940,7 @@ const parameterIdFromLabel = label => labelMap.get(label);
             }
             const target = formatParam(step.target);
             const command = step.type === 'set'
-              ? `set ${target}=${step.value}`
+              ? `set ${target}:${step.value}`
               : `get ${target}`;
             serialManager.send(command);
             await new Promise(resolve => setTimeout(resolve, 220));
