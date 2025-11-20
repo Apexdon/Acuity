@@ -970,6 +970,15 @@ const getParameterData = id => parameterDataMap.get(id) || { min: 0, max: 100, s
           document.getElementById('stopProgram').disabled = false;
           utils.toast('Running program...');
 
+          // Mark all SET commands as active at the start
+          for (let idx = 0; idx < appState.program.length; idx++) {
+            const step = appState.program[idx];
+            if (step.type === 'set') {
+              appState.activeCommands.set(idx, true);
+            }
+          }
+          render.programList();
+
           for (let idx = 0; idx < appState.program.length; idx++) {
             if (appState.stopRequested) {
               utils.toast('Program stopped by user.');
@@ -982,18 +991,12 @@ const getParameterData = id => parameterDataMap.get(id) || { min: 0, max: 100, s
               continue;
             }
 
-            appState.activeCommands.set(idx, true);
-            render.programList();
-
             const target = formatParam(step.target);
             const command = step.type === 'set'
               ? `set ${target}:${step.value}`
               : `get ${target}`;
             serialManager.send(command);
             await new Promise(resolve => setTimeout(resolve, 220));
-
-            appState.activeCommands.delete(idx);
-            render.programList();
           }
 
           appState.programRunning = false;
