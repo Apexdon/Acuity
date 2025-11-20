@@ -1157,6 +1157,18 @@ const getParameterData = id => parameterDataMap.get(id) || { min: 0, max: 100, s
       }
 
       init();
+
+      // Expose debug interface for testing
+      window.AcuityDebug = {
+        appState,
+        actions,
+        render,
+        serialManager,
+        utils,
+        getParameterData,
+        parameterLabel
+      };
+      console.log('[Acuity] Debug interface available at window.AcuityDebug');
     })();
   </script>
 </body>
