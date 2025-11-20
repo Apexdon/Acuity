@@ -834,7 +834,7 @@ const getParameterData = id => parameterDataMap.get(id) || { min: 0, max: 100, s
                     data-slider-idx="${idx}"
                     style="flex: 1;" />
                   <span style="min-width: 3rem; text-align: right;">${step.value || paramData.min}</span>
-                  <button class="danger" data-stop-command="${idx}" ${!isRunning ? 'disabled' : ''}
+                  <button class="danger" data-stop-command="${idx}" ${isRunning ? '' : 'disabled'}
                     style="position: static; padding: 0.25rem 0.5rem; font-size: 0.75rem;">Stop</button>
                 </div>`;
             }
