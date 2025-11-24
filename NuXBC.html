@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NuXBC Zero Control Console</title>
+  <style>
+    :root {
+      --navy: #1a3a52;
+      --mid-navy: #2c3e50;
+      --table-header: #34495e;
+      --primary: #3498db;
+      --primary-hover: #2980b9;
+      --success: #28a745;
+      --danger: #e74c3c;
+      --danger-hover: #c0392b;
+      --warning: #ffc107;
+      --warning-bg: #fff3cd;
+      --warning-border: #ffeaa7;
+      --card-bg: #ffffff;
+      --page-bg: #f5f7fa;
+      --muted: #6c757d;
+      --text-dark: #333;
+      --border: #dee2e6;
+      --border-light: #e9ecef;
+      --info-bg: #e7f3ff;
+      --info-border: #b8daff;
+      --info-text: #004085;
+      --success-bg: #d4edda;
+      --success-text: #155724;
+      --danger-bg: #f8d7da;
+      --danger-text: #721c24;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page-bg);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(120deg, var(--navy), var(--mid-navy));
+      color: #fff;
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      box-shadow: 0 6px 20px rgba(26, 58, 82, 0.35);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+    }
+
+    .status-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .badge.connected {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: rgba(40, 167, 69, 0.3);
+    }
+
+    .badge.disconnected {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border-color: rgba(231, 76, 60, 0.35);
+    }
+
+    .badge.mock {
+      background: var(--warning-bg);
+      color: #856404;
+      border-color: var(--warning-border);
+    }
+
+    button,
+    select,
+    input,
+    textarea {
+      font: inherit;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.6rem;
+      background: #fff;
+      color: var(--text-dark);
+      font-size: 0.9rem;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--primary-hover);
+      box-shadow: 0 6px 14px rgba(52, 152, 219, 0.35);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    button.success {
+      background: var(--success);
+    }
+
+    button.success:hover {
+      background: #1f7a34;
+    }
+
+    button.danger {
+      background: var(--danger);
+    }
+
+    button.danger:hover {
+      background: var(--danger-hover);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0.75rem;
+      padding: 0.75rem;
+    }
+
+    nav {
+      background: var(--mid-navy);
+      border-radius: 8px;
+      padding: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(44, 62, 80, 0.35);
+    }
+
+    nav h2 {
+      margin: 0;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #b8daff;
+    }
+
+    nav button {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.15);
+      color: #fff;
+      text-align: left;
+    }
+
+    nav button.active {
+      background: var(--primary);
+      border-color: transparent;
+    }
+
+    section {
+      background: transparent;
+      display: none;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    section.active {
+      display: flex;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.6rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .panel h3 {
+      margin: 0;
+      color: var(--mid-navy);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    textarea,
+    pre {
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      padding: 0.5rem;
+      min-height: 80px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    table thead {
+      background: var(--table-header);
+      color: #fff;
+    }
+
+    table th,
+    table td {
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .toolbar button {
+      flex: 1 1 140px;
+    }
+
+    .chip-set {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .chip {
+      background: var(--info-bg);
+      border: 1px solid var(--info-border);
+      padding: 0.2rem 0.4rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: var(--info-text);
+    }
+
+    .chip button {
+      margin-left: 0.3rem;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 0.75rem;
+      padding: 0;
+    }
+
+    .command-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .command-block {
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      padding: 0.5rem;
+      background: #f8f9fa;
+      position: relative;
+    }
+
+    .command-block h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 0.85rem;
+    }
+
+    .command-block p {
+      margin: 0;
+      font-size: 0.8rem;
+
+        {
+        id: 'fan_supply_tach', label: 'Fan Supply Tach', min: 0, max: 5000, step: 10, type: 'rpm'
+      }
+
+      ,
+      {
+      id: 'fan_extract_tach', label: 'Fan Extract Tach', min: 0, max: 5000, step: 10, type: 'rpm'
+    }
+
+    ,
+    {
+    id: 'damper_supply', label: 'Damper Supply', min: 0, max: 100, step: 1, type: 'percent'
+    }
+
+    ,
+    {
+    id: 'damper_extract', label: 'Damper Extract', min: 0, max: 100, step: 1, type: 'percent'
+    }
+
+    ,
+    {
+    id: 'damper_current_supply', label: 'Damper Current Supply', min: 0, max: 10, step: 0.1, type: 'current'
+    }
+
+    ,
+    {
+    id: 'damper_current_extract', label: 'Damper Current Extract', min: 0, max: 10, step: 0.1, type: 'current'
+    }
+
+    ,
+    {
+    id: 'cool_setpoint', label: 'Cool Setpoint', min: 18, max: 30, step: 0.5, type: 'temp'
+    }
+
+    ,
+    {
+    id: 'heat_setpoint', label: 'Heat Setpoint', min: 15, max: 25, step: 0.5, type: 'temp'
+    }
+
+    ,
+    {
+    id: 'fan_setpoint', label: 'Fan Setpoint', min: 0, max: 100, step: 1, type: 'percent'
+    }
+
+    ,
+    {
+    id: 'airflow_demand', label: 'Airflow Demand', min: 0, max: 100, step: 1, type: 'percent'
+    }
+
+    ,
+    {
+    id: 'pressure_demand', label: 'Pressure Demand', min: 0, max: 100, step: 1, type: 'percent'
+    }
+
+    ,
+    {
+    id: 'system_status', label: 'System Status', min: 0, max: 10, step: 1, type: 'status'
+    }
+
+    ,
+    {
+    id: 'fault_code', label: 'Fault Code', min: 0, max: 100, step: 1, type: 'code'
+    }
+
+    ,
+    {
+    id: 'control_mode', label: 'Control Mode', min: 0, max: 5, step: 1, type: 'mode'
+    }
+
+    ];
+
+    const parameterMap=new Map(parameters.map(item=> [item.id, item.label]));
+    const labelMap=new Map(parameters.map(item=> [item.label, item.id]));
+    const parameterDataMap=new Map(parameters.map(item=> [item.id, item]));
+    const parameterLabel=id=>parameterMap.has(id) ? parameterMap.get(id) : id;
+    const parameterIdFromLabel=label=>labelMap.get(label);
+
+    const getParameterData=id=>parameterDataMap.get(id) || {
+      min: 0, max: 100, step: 1
+    }
+
+    ;
+
+    const monitorDefaults=['temp_ext',
+    'temp_int',
+    'fan_supply_out',
+    'fan_extract_out',
+    'damper_supply',
+    'cool_setpoint'];
+    const infoCommands=new Set(['uid1', 'uid2', 'uid3', 'flash', 'uart', 'version']);
+    const fileCommands=new Set(['filelist', 'readfile', 'readfilesize', 'formatfs']);
+    const configCommands=new Set(['config', 'default']);
+
+    const appState= {
+      port: null,
+        reader: null,
+        writer: null,
+        keepReading: false,
+        connected: false,
+        mockMode: false,
+        selectedPortName: '--',
+        log: [],
+        history: [],
+        getParams: new Set(),
+        setQueue: [],
+        monitorSelection: new Set(monitorDefaults),
+        autoRefreshTimer: null,
+        keepAliveTimer: null,
+        lastResponse: '',
+        lastCommand: '',
+        program: [],
+        programRunning: false,
+        stopRequested: false,
+        activeCommands: new Map()
+    }
+
+    ;
+
+    const formatParam=id=>`"${parameterLabel(id)}" `;
+
+    const parsePairs=text=> {
+      const result= {}
+
+      ;
+
+      text.split(/[\n, ]/).forEach(pair=> {
+          const [rawKey, rawVal]=pair.split('=');
+          if ( !rawKey) return;
+          const key=rawKey.trim().replace(/^"|"$/g, '');
+          const value=rawVal !==undefined ? rawVal.trim() : '';
+          if ( !key) return;
+          result[key]=value;
+          const id=parameterIdFromLabel(key);
+          if (id) result[id]=value;
+        });
+      return result;
+    }
+
+    ;
+
+    const utils= {
+
+      timestamp: ()=>new Date().toLocaleTimeString(),
+      log(message, type='info') {
+        const entry=`[$ {
+          this.timestamp()
+        }
+
+        ] ($ {
+            type.toUpperCase()
+
+          }) $ {
+          message
+        }
+
+        `;
+        appState.log.push(entry);
+        if (appState.log.length > 200) appState.log.shift();
+        render.log();
+      }
+
+      ,
+      history(command, status) {
+        appState.history.unshift({
+          ts: this.timestamp(), command, status
+        });
+      if (appState.history.length > 120) appState.history.pop();
+      render.history();
+    }
+
+    ,
+    toast(message) {
+      dom.toast.textContent=message;
+      dom.toast.classList.add('show');
+      setTimeout(()=> dom.toast.classList.remove('show'), 2200);
+    }
+
+    ,
+    ensureSerialSupport() {
+      if ( !('serial' in navigator)) {
+        this.toast('Web Serial not supported. Use Chrome or Edge.');
+        return false;
+      }
+
+      return true;
+    }
+    }
+
+    ;
+
+    const serialManager= {
+
+      buffer: '',
+      async connect() {
+        if (appState.mockMode) {
+          utils.toast('Demo mode enabled - hardware disabled.');
+          return;
+        }
+
+        if ( !utils.ensureSerialSupport()) return;
+
+        try {
+          appState.port=await navigator.serial.requestPort();
+
+          await appState.port.open({
+            baudRate: 115200, dataBits: 8, stopBits: 1, parity: 'none', flowControl: 'none'
+          });
+        appState.keepReading=true;
+        serialManager.readLoop();
+        appState.writer=appState.port.writable.getWriter();
+        const info=appState.port.getInfo();
+
+        appState.selectedPortName=`VID $ {
+          info.usbVendorId || 'n/a'
+        }
+
+        / PID $ {
+          info.usbProductId || 'n/a'
+        }
+
+        `;
+        appState.connected=true;
+        utils.log('Serial port connected.');
+        render.status();
+        serialManager.startKeepAlive();
+      }
+
+      catch (err) {
+        utils.log(`Connection failed: $ {
+            err.message
+          }
+
+          `, 'error');
+        utils.toast('Unable to connect to serial port.');
+      }
+    }
+
+    ,
+    async disconnect() {
+      appState.keepReading=false;
+      serialManager.stopKeepAlive();
+
+      if (appState.reader) {
+        try {
+          await appState.reader.cancel();
+        }
+
+        catch (_) {}
+
+        appState.reader.releaseLock();
+        appState.reader=null;
+      }
+
+      if (appState.writer) {
+        try {
+          appState.writer.releaseLock();
+        }
+
+        catch (_) {}
+
+        appState.writer=null;
+      }
+
+      if (appState.port) {
+        try {
+          await appState.port.close();
+        }
+
+        catch (_) {}
+
+        appState.port=null;
+      }
+
+      appState.connected=false;
+      appState.selectedPortName='--';
+      render.status();
+      utils.log('Serial port disconnected.');
+    }
+
+    ,
+    async readLoop() {
+      while (appState.port && appState.keepReading) {
+        try {
+          const reader=appState.port.readable.getReader();
+          appState.reader=reader;
+
+          while (appState.keepReading) {
+            const {
+              value,
+              done
+            }
+
+            =await reader.read();
+            if (done) break;
+            const text=new TextDecoder().decode(value);
+            serialManager.handleIncoming(text);
+          }
+
+          reader.releaseLock();
+        }
+
+        catch (err) {
+          utils.log(`Read error: $ {
+              err.message
+            }
+
+            `, 'error');
+          break;
+        }
+      }
+    }
+
+    ,
+    handleIncoming(text) {
+      serialManager.buffer+=text;
+      const lines=serialManager.buffer.split(/\r?\n/);
+      // The last element is either an empty string (if text ended with newline)
+      // or the incomplete part of the next line. We keep it in the buffer.
+      serialManager.buffer=lines.pop();
+
+      for (const line of lines) {
+        const trimmed=line.trim();
+
+        if (trimmed) {
+          utils.log(`RX: $ {
+              trimmed
+            }
+
+            `);
+          processResponse(trimmed);
+        }
+      }
+    }
+
+    ,
+    async send(command) {
+      const normalized=command.trim();
+      if ( !normalized) return;
+      appState.lastCommand=normalized.split(' ')[0]?.toLowerCase() || '';
+
+      const formatted=`$ {
+        normalized
+      }
+
+      \r\n`;
+
+      utils.log(`TX: $ {
+          normalized
+        }
+
+        `);
+      utils.history(normalized, appState.connected || appState.mockMode ? 'sent' : 'queued');
+
+      if (appState.mockMode) {
+        mockEngine.respond(normalized);
+        return;
+      }
+
+      if ( !appState.writer) {
+        utils.toast('Writer unavailable. Connect first.');
+        return;
+      }
+
+      try {
+        await appState.writer.write(new TextEncoder().encode(formatted));
+      }
+
+      catch (err) {
+        utils.log(`Send error: $ {
+            err.message
+          }
+
+          `, 'error');
+        utils.toast('Failed to send command.');
+      }
+    }
+
+    ,
+    startKeepAlive() {
+      if (appState.keepAliveTimer) return;
+      if (appState.mockMode) return;
+
+      appState.keepAliveTimer=setInterval(()=> {
+          serialManager.send('set "Control Mode":1');
+        }
+
+        , 3600000);
+      utils.log('Keep-alive started (60 min interval).');
+    }
+
+    ,
+    stopKeepAlive() {
+      if (appState.keepAliveTimer) {
+        clearInterval(appState.keepAliveTimer);
+        appState.keepAliveTimer=null;
+        utils.log('Keep-alive stopped.');
+      }
+    }
+    }
+
+    ;
+
+    const processResponse=text=> {
+      const output=text || '';
+      appState.lastResponse=output;
+      render.customResponse(output);
+      const cmd=appState.lastCommand;
+
+      if (infoCommands.has(cmd)) {
+        dom.systemInfo.textContent=output || 'No response.';
+        return;
+      }
+
+      if (fileCommands.has(cmd)) {
+        dom.fsOutput.textContent=output || 'No response.';
+        return;
+      }
+
+      if (configCommands.has(cmd)) {
+        dom.configOutput.textContent=output || 'No response.';
+        return;
+      }
+
+      if (cmd==='data') {
+        const data=parsePairs(output);
+        if (Object.keys(data).length) render.monitorData(data);
+        return;
+      }
+
+      if (cmd==='get') {
+        dom.getOutput.textContent=output || 'No response.';
+        return;
+      }
+
+      if (cmd==='set') {
+        dom.getOutput.textContent=`SET ACK: $ {
+          output || 'OK'
+        }
+
+        `;
+        return;
+      }
+
+      dom.systemInfo.textContent=output || 'No response.';
+    }
+
+    ;
+
+    const mockEngine= {
+      respond(command) {
+        const cmd=command.split(' ')[0].toLowerCase();
+        let payload='';
+
+        switch (cmd) {
+          case 'uid1': case 'uid2': case 'uid3': payload=`$ {
+            cmd.toUpperCase()
+          }
+
+          : $ {
+            Math.random().toString(16).slice(2, 10)
+          }
+
+          `;
+          break;
+          case 'flash': payload='Flash: STM32H7 2048KB';
+          break;
+          case 'uart': payload='UART loopback OK';
+          break;
+          case 'filelist': payload='config.json (2KB)\ndata.log (120KB)';
+          break;
+          case 'config': payload='{"fan_setpoint":75,"cool_setpoint":24.0}';
+          break;
+
+          case 'data': payload=parameters.map(p=> `$ {
+              p.label
+            }
+
+            =$ {
+              (Math.random() * 100).toFixed(1)
+            }
+
+            `).join(', ');
+          break;
+          default: if (cmd==='readfile') payload='File chunk lorem ipsum...';
+
+          else payload=`ACK $ {
+            command
+          }
+
+          `;
+        }
+
+        processResponse(payload);
+      }
+    }
+
+    ;
+
+    const render= {
+      status() {
+        dom.connectionBadge.textContent=appState.connected ? 'Connected': 'Disconnected';
+
+        dom.connectionBadge.className=`badge $ {
+          appState.connected ? 'connected': 'disconnected'
+        }
+
+        `;
+
+        dom.portBadge.textContent=`Port: $ {
+          appState.selectedPortName
+        }
+
+        `;
+
+        dom.modeBadge.textContent=`Mode: $ {
+          appState.mockMode ? 'Demo': 'Hardware'
+        }
+
+        `;
+
+        dom.modeBadge.className=`badge $ {
+          appState.mockMode ? 'mock': ''
+        }
+
+        `;
+        dom.connectBtn.disabled=appState.connected;
+        dom.disconnectBtn.disabled= !appState.connected;
+      }
+
+      ,
+      log() {
+        dom.logPanel.innerHTML=appState.log.map(line=> `<div class="log-entry" >$ {
+            line
+          }
+
+          </div>`).join('');
+        dom.logPanel.scrollTop=dom.logPanel.scrollHeight;
+      }
+
+      ,
+      history() {
+        dom.historyTable.innerHTML=appState.history.map(item=> `<tr> <td>$ {
+            item.ts
+          }
+
+          </td> <td>$ {
+            item.command
+          }
+
+          </td> <td>$ {
+            item.status
+          }
+
+          </td> </tr>`).join('');
+      }
+
+      ,
+      customResponse(text) {
+        dom.customResponse.textContent=text || 'No response.';
+      }
+
+      ,
+      monitorSelection() {
+        dom.monitorSelection.innerHTML=parameters.map(param=> {
+            const active=appState.monitorSelection.has(param.id);
+
+            return `<label class="chip" ><input type="checkbox" data-monitor="${param.id}"$ {
+              active ? 'checked' : ''
+            }
+
+            /> $ {
+              param.label
+            }
+
+            </label>`;
+          }).join('');
+      }
+
+      ,
+      monitorData(data) {
+        const now=utils.timestamp();
+
+        dom.monitorTable.innerHTML=Array.from(appState.monitorSelection).map(key=> {
+            const label=parameterLabel(key);
+            const value=data[label] ?? data[key] ?? '--';
+
+            return `<tr> <td>$ {
+              label
+            }
+
+            </td> <td>$ {
+              value
+            }
+
+            </td> <td>$ {
+              now
+            }
+
+            </td> </tr>`;
+          }).join('');
+      }
+
+      ,
+      getQueue() {
+        dom.getQueue.innerHTML=Array.from(appState.getParams).map(param=> `<span class="chip" >$ {
+            parameterLabel(param)
+          }
+
+          <button data-remove-get="${param}" >x</button></span>`).join('');
+      }
+
+      ,
+      setQueue() {
+        dom.setQueue.innerHTML=appState.setQueue.map((item, idx)=> ` <div class="command-block" > <h4>$ {
+            parameterLabel(item.param)
+          }
+
+          </h4> <p>Value: $ {
+            item.value
+          }
+
+          </p> <button data-remove-set="${idx}" >Remove</button> </div> `).join('');
+      }
+
+      ,
+      programList() {
+        const list=document.getElementById('programList');
+
+        list.innerHTML=appState.program.map((step, idx)=> {
+            const targetLabel=step.type==='delay' ? 'Delay' : parameterLabel(step.target);
+            const isRunning=appState.activeCommands.has(idx);
+
+            // Generate slider for SET commands (not delay)
+            let sliderHtml='';
+
+            if (step.type==='set' && step.target) {
+              const paramData=getParameterData(step.target);
+              sliderHtml=` <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;" > <input type="range"
+              min="${paramData.min}" max="${paramData.max}" step="${paramData.step}" value="${step.value || paramData.min}"
+
+              data-slider-idx="${idx}" style="flex: 1;" /> <span style="min-width: 3rem; text-align: right;" >$ {
+                step.value || paramData.min
+              }
+
+              </span> <button class="danger" data-stop-command="${idx}"$ {
+                isRunning ? '' : 'disabled'
+              }
+
+              style="position: static; padding: 0.25rem 0.5rem; font-size: 0.75rem;" >Stop</button> </div>`;
+            }
+
+            return ` <div class="command-block" style="padding-right: 2.5rem;" > <h4>$ {
+              step.type.toUpperCase()
+            }
+
+            </h4> <p>Target: $ {
+              targetLabel || '--'
+            }
+
+            | Value: $ {
+              step.value || '--'
+            }
+
+            </p> $ {
+              sliderHtml
+            }
+
+            <button data-remove-program="${idx}" >Remove</button> </div> `;
+          }).join('');
+      }
+    }
+
+    ;
+
+    const actions= {
+      addGetParam() {
+        const selected=Array.from(dom.parameterSelect.selectedOptions).map(opt=> opt.value);
+        selected.forEach(param=> appState.getParams.add(param));
+        render.getQueue();
+      }
+
+      ,
+      removeGetParam(param) {
+        appState.getParams.delete(param);
+        render.getQueue();
+      }
+
+      ,
+      executeGet() {
+        if ( !appState.getParams.size) return utils.toast('Add at least one parameter.');
+        const command=Array.from(appState.getParams).map(formatParam).join(',');
+
+        serialManager.send(`get $ {
+            command
+          }
+
+          `);
+      }
+
+      ,
+      addSetParam() {
+        const param=dom.setParam.value;
+        const value=document.getElementById('setValue').value.trim();
+        if ( !value) return utils.toast('Enter a value to set.');
+
+        appState.setQueue.push({
+          param, value
+        });
+      render.setQueue();
+    }
+
+    ,
+    removeSetParam(index) {
+      appState.setQueue.splice(index, 1);
+      render.setQueue();
+    }
+
+    ,
+    executeSet() {
+      if ( !appState.setQueue.length) return utils.toast('Set queue empty.');
+
+      const payload=appState.setQueue .map(item=> `$ {
+          formatParam(item.param)
+        }
+
+        :$ {
+          item.value
+        }
+
+        `) .join(',');
+
+      serialManager.send(`set $ {
+          payload
+        }
+
+        `);
+    }
+
+    ,
+    clearSetQueue() {
+      appState.setQueue=[];
+      render.setQueue();
+    }
+
+    ,
+    sendCustom() {
+      const value=document.getElementById('customCommand').value.trim();
+      if ( !value) return utils.toast('Enter a command first.');
+      serialManager.send(value);
+      const option=document.createElement('option');
+      option.textContent=value;
+      dom.commandHistory.prepend(option);
+      if (dom.commandHistory.options.length > 20) dom.commandHistory.removeChild(dom.commandHistory.lastChild);
+    }
+
+    ,
+    saveResponse() {
+      const blob=new Blob([appState.lastResponse || ''], {
+        type: 'text/plain'
+      });
+    const link=document.createElement('a');
+    link.href=URL.createObjectURL(blob);
+
+    link.download=`zero-board-response-$ {
+      Date.now()
+    }
+
+    .txt`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    }
+
+    ,
+    readFile() {
+      const filename=document.getElementById('fsFilename').value.trim();
+      const offset=document.getElementById('fsOffset').value;
+      const chunk=document.getElementById('fsChunk').value;
+      if ( !filename) return utils.toast('Enter a filename.');
+
+      serialManager.send(`readfile $ {
+          filename
+        }
+
+        $ {
+          offset
+        }
+
+        $ {
+          chunk
+        }
+
+        `);
+    }
+
+    ,
+    fileSize() {
+      const filename=document.getElementById('fsFilename').value.trim();
+      if ( !filename) return utils.toast('Enter a filename.');
+
+      serialManager.send(`readfilesize $ {
+          filename
+        }
+
+        `);
+    }
+
+    ,
+    formatFs() {
+      if ( !confirm('Formatting the filesystem will erase all data. Continue?')) return;
+      serialManager.send('formatfs');
+    }
+
+    ,
+    resetDefaults() {
+      if ( !confirm('Restore default configuration?')) return;
+      serialManager.send('default');
+    }
+
+    ,
+    addProgramStep() {
+      const type=document.getElementById('cpCommandType').value;
+      const target=document.getElementById('cpTarget').value;
+      const value=document.getElementById('cpValue').value.trim();
+      if (type !=='delay' && ( !target || !value)) return utils.toast('Provide target and value.');
+      if (type==='delay' && !value) return utils.toast('Provide delay duration.');
+
+      appState.program.push({
+        type, target, value
+      });
+    render.programList();
+    }
+
+    ,
+    removeProgramStep(index) {
+      appState.program.splice(index, 1);
+      render.programList();
+    }
+
+    ,
+    saveProgram() {
+      const blob=new Blob([JSON.stringify(appState.program, null, 2)], {
+        type: 'application/json'
+      });
+    const link=document.createElement('a');
+    link.href=URL.createObjectURL(blob);
+
+    link.download=`zero-program-$ {
+      Date.now()
+    }
+
+    .json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    }
+
+    ,
+    loadProgram(file) {
+      const reader=new FileReader();
+
+      reader.onload=evt=> {
+        try {
+          const data=JSON.parse(evt.target.result);
+          if ( !Array.isArray(data)) throw new Error('Invalid format');
+          appState.program=data;
+          render.programList();
+          utils.toast('Program loaded.');
+        }
+
+        catch (err) {
+          utils.toast('Invalid JSON program.');
+        }
+      }
+
+      ;
+      reader.readAsText(file);
+    }
+
+    ,
+    async runProgram() {
+      if ( !appState.program.length) return utils.toast('Add steps to the program first.');
+      if (appState.programRunning) return utils.toast('Program already running.');
+
+      appState.programRunning=true;
+      appState.stopRequested=false;
+      document.getElementById('runProgram').disabled=true;
+      document.getElementById('stopProgram').disabled=false;
+      utils.toast('Running program...');
+
+      // Mark all SET commands as active at the start
+      for (let idx=0; idx < appState.program.length; idx++) {
+        const step=appState.program[idx];
+
+        if (step.type==='set') {
+          appState.activeCommands.set(idx, true);
+        }
+      }
+
+      render.programList();
+
+      while ( !appState.stopRequested) {
+        for (let idx=0;
+
+          idx < appState.program.length; idx++) {
+          if (appState.stopRequested) {
+            break;
+          }
+
+          const step=appState.program[idx];
+
+          if (step.type==='delay') {
+            await new Promise(resolve=> setTimeout(resolve, Number(step.value) || 0));
+            continue;
+          }
+
+          const target=formatParam(step.target);
+          const command=step.type==='set'
+
+          ? `set $ {
+            target
+          }
+
+          :$ {
+            step.value
+          }
+
+          ` : `get $ {
+            target
+          }
+
+          `;
+          serialManager.send(command);
+          await new Promise(resolve=> setTimeout(resolve, 220));
+        }
+
+        // Optional: Add a small delay between loops if needed, but the step delays should suffice.
+        if (appState.stopRequested) break;
+      }
+
+      appState.programRunning=false;
+      appState.activeCommands.clear();
+      document.getElementById('runProgram').disabled=false;
+      document.getElementById('stopProgram').disabled=true;
+      render.programList();
+
+      if (appState.stopRequested) {
+        utils.toast('Program stopped by user.');
+      }
+
+      else {
+        // This part is technically unreachable now unless we add a condition to break the while loop other than stopRequested
+        // But for safety/future proofing we can leave it or adjust.
+        // Since it loops forever until stopped, we only reach here if stopped.
+      }
+    }
+
+    ,
+    stopProgram() {
+      if ( !appState.programRunning) return;
+      appState.stopRequested=true;
+
+      appState.activeCommands.forEach((_, idx)=> {
+          serialManager.send(`set $ {
+              formatParam(appState.program[idx].target)
+            }
+
+            :0`);
+        });
+      appState.activeCommands.clear();
+      utils.toast('Stopping program...');
+    }
+
+    ,
+    stopIndividualCommand(idx) {
+      const step=appState.program[idx];
+
+      if (step && step.type==='set' && step.target) {
+        serialManager.send(`set $ {
+            formatParam(step.target)
+          }
+
+          :0`);
+        appState.activeCommands.delete(idx);
+        render.programList();
+
+        utils.toast(`Stopped: $ {
+            parameterLabel(step.target)
+          }
+
+          `);
+      }
+    }
+
+    ,
+    toggleAutoRefresh() {
+      if (appState.autoRefreshTimer) {
+        clearInterval(appState.autoRefreshTimer);
+        appState.autoRefreshTimer=null;
+        dom.autoRefreshToggle.textContent='Enable Auto Refresh';
+        utils.toast('Auto refresh disabled.');
+        return;
+      }
+
+      const interval=Number(document.getElementById('autoRefreshInterval').value) * 1000;
+      appState.autoRefreshTimer=setInterval(()=> serialManager.send('data'), interval);
+      dom.autoRefreshToggle.textContent='Disable Auto Refresh';
+      utils.toast('Auto refresh enabled.');
+    }
+    }
+
+    ;
+
+    function bindEvents() {
+      dom.connectBtn.addEventListener('click', ()=> serialManager.connect());
+      dom.disconnectBtn.addEventListener('click', ()=> serialManager.disconnect());
+
+      dom.mockToggle.addEventListener('click', ()=> {
+          appState.mockMode= !appState.mockMode;
+          dom.mockToggle.textContent=appState.mockMode ? 'Disable Demo Mode' : 'Enable Demo Mode';
+          dom.mockToggle.classList.toggle('danger', !appState.mockMode);
+          render.status();
+
+          utils.log(`Demo mode $ {
+              appState.mockMode ? 'enabled' : 'disabled'
+            }
+
+            `);
+        });
+
+      document.querySelectorAll('[data-command]').forEach(btn=> btn.addEventListener('click', ()=> serialManager.send(btn.dataset.command)));
+
+      document.querySelectorAll('[data-action]').forEach(btn=> {
+          btn.addEventListener('click', ()=> {
+              const action=btn.dataset.action;
+
+              if (action==='clearLog') {
+                appState.log=[]; render.log(); return;
+              }
+
+              if (action==='downloadLog') {
+                const blob=new Blob([appState.log.join('\n')], {
+                  type: 'text/plain'
+                });
+              const link=document.createElement('a');
+              link.href=URL.createObjectURL(blob);
+
+              link.download=`zero-board-log-$ {
+                Date.now()
+              }
+
+              .txt`;
+              link.click();
+              URL.revokeObjectURL(link.href);
+              return;
+            }
+
+            if (action==='getAllData') return serialManager.send('data');
+            utils.toast('Refresh ports not available in browser sandbox.');
+          });
+      });
+
+    document.getElementById('fsReadBtn').addEventListener('click', actions.readFile);
+    document.getElementById('fsSizeBtn').addEventListener('click', actions.fileSize);
+    document.getElementById('formatFsBtn').addEventListener('click', actions.formatFs);
+    document.getElementById('resetDefaultsBtn').addEventListener('click', actions.resetDefaults);
+    document.getElementById('sendCustomBtn').addEventListener('click', actions.sendCustom);
+    document.getElementById('saveResponseBtn').addEventListener('click', actions.saveResponse);
+    document.getElementById('addGetParam').addEventListener('click', actions.addGetParam);
+    document.getElementById('executeGet').addEventListener('click', actions.executeGet);
+    document.getElementById('addSetParam').addEventListener('click', actions.addSetParam);
+    document.getElementById('executeSet').addEventListener('click', actions.executeSet);
+    document.getElementById('clearSetQueue').addEventListener('click', actions.clearSetQueue);
+    dom.autoRefreshToggle.addEventListener('click', actions.toggleAutoRefresh);
+
+    dom.commandHistory.addEventListener('change', ()=> {
+        document.getElementById('customCommand').value=dom.commandHistory.value;
+      });
+
+    dom.getQueue.addEventListener('click', e=> {
+        if (e.target.dataset.removeGet) actions.removeGetParam(e.target.dataset.removeGet);
+      });
+
+    dom.setQueue.addEventListener('click', e=> {
+        if (e.target.dataset.removeSet) actions.removeSetParam(Number(e.target.dataset.removeSet));
+      });
+    document.getElementById('addProgramStep').addEventListener('click', actions.addProgramStep);
+    document.getElementById('saveProgram').addEventListener('click', actions.saveProgram);
+    document.getElementById('runProgram').addEventListener('click', actions.runProgram);
+    document.getElementById('stopProgram').addEventListener('click', actions.stopProgram);
+
+    document.getElementById('programLoader').addEventListener('change', e=> {
+        if (e.target.files.length) actions.loadProgram(e.target.files[0]);
+      });
+
+    document.getElementById('programList').addEventListener('click', e=> {
+        if (e.target.dataset.removeProgram) {
+          actions.removeProgramStep(Number(e.target.dataset.removeProgram));
+        }
+
+        else if (e.target.dataset.stopCommand !==undefined) {
+          actions.stopIndividualCommand(Number(e.target.dataset.stopCommand));
+        }
+      });
+
+    document.getElementById('programList').addEventListener('input', e=> {
+        if (e.target.dataset.sliderIdx !==undefined) {
+          const idx=Number(e.target.dataset.sliderIdx);
+          const value=e.target.value;
+
+          if (appState.program[idx]) {
+            appState.program[idx].value=value;
+            // Update the display value next to slider
+            e.target.nextElementSibling.textContent=value;
+            // Update the main value display
+            const block=e.target.closest('.command-block');
+            const valuePara=block.querySelector('p');
+            const targetLabel=appState.program[idx].type==='delay' ? 'Delay' : parameterLabel(appState.program[idx].target);
+
+            valuePara.textContent=`Target: $ {
+              targetLabel
+            }
+
+            | Value: $ {
+              value
+            }
+
+            `;
+          }
+        }
+      });
+
+    dom.monitorSelection.addEventListener('change', e=> {
+        if (e.target.dataset.monitor) {
+          if (e.target.checked) appState.monitorSelection.add(e.target.dataset.monitor);
+          else appState.monitorSelection.delete(e.target.dataset.monitor);
+        }
+      });
+
+    dom.modeButtons.forEach(btn=> btn.addEventListener('click', ()=> {
+          dom.modeButtons.forEach(b=> b.classList.remove('active'));
+          btn.classList.add('active');
+          dom.sections.forEach(section=> section.classList.remove('active'));
+          document.getElementById(btn.dataset.target).classList.add('active');
+        }));
+    window.addEventListener('beforeunload', ()=> serialManager.disconnect());
+    }
+
+    function init() {
+      const cpTarget=document.getElementById('cpTarget');
+
+      parameters.forEach(param=> {
+          const option=document.createElement('option');
+          option.value=param.id;
+          option.textContent=param.label;
+          dom.parameterSelect.appendChild(option);
+          dom.setParam.appendChild(option.cloneNode(true));
+          cpTarget.appendChild(option.cloneNode(true));
+        });
+      render.monitorSelection();
+      render.setQueue();
+      render.getQueue();
+      render.programList();
+      render.status();
+      bindEvents();
+    }
+
+    init();
+
+    // Expose debug interface for testing
+    window.AcuityDebug= {
+      appState,
+      actions,
+      render,
+      serialManager,
+      utils,
+      getParameterData,
+      parameterLabel
+    }
+
+    ;
+    console.log('[Acuity] Debug interface available at window.AcuityDebug');
+    })();
+    </script></body></html>
