@@ -979,24 +979,27 @@ const getParameterData = id => parameterDataMap.get(id) || { min: 0, max: 100, s
           }
           render.programList();
 
-          for (let idx = 0; idx < appState.program.length; idx++) {
-            if (appState.stopRequested) {
-              utils.toast('Program stopped by user.');
-              break;
-            }
+          while (!appState.stopRequested) {
+            for (let idx = 0; idx < appState.program.length; idx++) {
+              if (appState.stopRequested) {
+                break;
+              }
 
-            const step = appState.program[idx];
-            if (step.type === 'delay') {
-              await new Promise(resolve => setTimeout(resolve, Number(step.value) || 0));
-              continue;
-            }
+              const step = appState.program[idx];
+              if (step.type === 'delay') {
+                await new Promise(resolve => setTimeout(resolve, Number(step.value) || 0));
+                continue;
+              }
 
-            const target = formatParam(step.target);
-            const command = step.type === 'set'
-              ? `set ${target}:${step.value}`
-              : `get ${target}`;
-            serialManager.send(command);
-            await new Promise(resolve => setTimeout(resolve, 220));
+              const target = formatParam(step.target);
+              const command = step.type === 'set'
+                ? `set ${target}:${step.value}`
+                : `get ${target}`;
+              serialManager.send(command);
+              await new Promise(resolve => setTimeout(resolve, 220));
+            }
+            // Optional: Add a small delay between loops if needed, but the step delays should suffice.
+            if (appState.stopRequested) break;
           }
 
           appState.programRunning = false;
@@ -1005,8 +1008,12 @@ const getParameterData = id => parameterDataMap.get(id) || { min: 0, max: 100, s
           document.getElementById('stopProgram').disabled = true;
           render.programList();
 
-          if (!appState.stopRequested) {
-            utils.toast('Program complete.');
+          if (appState.stopRequested) {
+            utils.toast('Program stopped by user.');
+          } else {
+            // This part is technically unreachable now unless we add a condition to break the while loop other than stopRequested
+            // But for safety/future proofing we can leave it or adjust. 
+            // Since it loops forever until stopped, we only reach here if stopped.
           }
         },
         stopProgram() {
